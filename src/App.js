@@ -1,6 +1,7 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import './App.css';
 
+// Definimos el estado inicial del formulario
 const initialState = {
   name: '',
   lastName: '',
@@ -9,6 +10,7 @@ const initialState = {
   phoneNumber: ''
 };
 
+// Definimos un reductor para manejar las acciones del formulario
 const formReducer = (state, event) => {
   return {
     ...state,
@@ -16,12 +18,16 @@ const formReducer = (state, event) => {
   };
 };
 
+// Definimos el componente App
 function App() {
+  // Utilizamos el hook useReducer para manejar el estado del formulario
   const [formData, setFormData] = useReducer(formReducer, initialState);
+  // Utilizamos el hook useState para manejar el estado de envío y mostrar la información
   const [submitting, setSubmitting] = useState(false);
   const [showData, setShowData] = useState(false);
   const [timeLeft, setTimeLeft] = useState(7);
 
+  // Utilizamos el hook useEffect para manejar el efecto secundario de mostrar la información durante 7 segundos
   useEffect(() => {
     let timer;
     if (submitting) {
@@ -42,6 +48,7 @@ function App() {
     return () => clearInterval(timer);
   }, [submitting, setFormData, initialState]);
 
+  // Definimos la función handleSubmit para manejar el envío del formulario
   const handleSubmit = event => {
     event.preventDefault();
     setSubmitting(true);
@@ -49,14 +56,17 @@ function App() {
     setTimeLeft(7);
   };
 
+  // Definimos la función handleChange para manejar los cambios en el formulario
   const handleChange = event => {
     setFormData({ name: event.target.name, value: event.target.value });
   };
 
+  // Renderizamos el componente
   return (
     <div className="estilo">
       <h1>Registro de Estudiantes</h1>
       {showData ? (
+        // Si showData es verdadero (se activa showData por 7 segundos), mostramos la información del estudiante y el tiempo restante
         <div>
           <h2>Información del Estudiante:</h2>
           <ul>
@@ -68,8 +78,9 @@ function App() {
             ))}
           </ul>
           <p>Tiempo restante para ocultar la información: {timeLeft} segundos</p>
-        </div>
+        </div> // Definicion del temporizador en el DOM
       ) : (
+        // Si showData es falso, mostramos el formulario
         <form onSubmit={handleSubmit}>
           <fieldset>
             <label>
@@ -100,4 +111,5 @@ function App() {
   );
 }
 
+// Exportamos el componente App
 export default App;
